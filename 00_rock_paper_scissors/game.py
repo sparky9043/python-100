@@ -58,7 +58,7 @@ class Game:
         player1 (Player): player object
         player2 (Player): computer object
     """
-    def __init__(self, player: Player, computer):
+    def __init__(self, player: Player, computer: Computer):
         """Initialize the game object with two player objects
 
         Args:
@@ -67,13 +67,37 @@ class Game:
         """
         self.player = player
         self.computer = computer
-        self.score = {
-            player1.name: player1.score,
-            player2.name: player2.score,
-        }
         
-player1 = Player('john')
-player2 = Computer()
+    def start_match(self, index: int):
+        """Starts match by getting player and computer choices"""
+        player_choice = self.player.get_choice(index)
+        computer_choice = self.computer.get_choice()
+        winner = self.get_winner(player_choice, computer_choice)
+        print(player_choice, computer_choice, winner)
+        
+    def get_score(self):
+        """Return Player and Computer scores in strings"""
+        return f"Player: {self.player.score} Computer: {self.computer.score}"
+    
+    def get_winner(self, player_choice, computer_choice) -> str:
+        """Compares player and computer choices and return winner as str"""
+        winner = "computer"
+        
+        if ((player_choice == "rock" and computer_choice == "scissors") or
+            (player_choice == "paper" and computer_choice == "rock") or
+            (player_choice == "scissors" and computer_choice == "paper")):
+            winner = "player"
+        elif player_choice == computer_choice:
+            winner = "tie"
+            
+        return winner
+        
+player = Player('john')
+computer = Computer()
 
-# game = Game(player1, player2)
-# print(game)
+game = Game(player, computer)
+game.start_match(0)
+game.start_match(1)
+game.start_match(1)
+game.start_match(2)
+print(game.get_score())
