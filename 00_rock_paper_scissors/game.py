@@ -114,4 +114,6 @@ player = Player('john')
 computer = Computer()
 
 game = Game(player, computer)
-print(game.get_score())
+
+for i in range(0, 100):
+    game.start_match(i % 3)
