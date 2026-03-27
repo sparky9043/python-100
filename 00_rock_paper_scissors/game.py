@@ -67,17 +67,22 @@ class Game:
         """
         self.player = player
         self.computer = computer
+        self.tie = 0
         
     def start_match(self, index: int):
         """Starts match by getting player and computer choices"""
         player_choice = self.player.get_choice(index)
         computer_choice = self.computer.get_choice()
         winner = self.get_winner(player_choice, computer_choice)
+        self.update_score(winner)
         print(player_choice, computer_choice, winner)
+        print(self.get_score())
         
     def get_score(self):
         """Return Player and Computer scores in strings"""
-        return f"Player: {self.player.score} Computer: {self.computer.score}"
+        return (f"Player: {self.player.score} "
+                f"Computer: {self.computer.score} "
+                f"Tie: {self.tie}")
     
     def get_winner(self, player_choice, computer_choice) -> str:
         """Compares player and computer choices and return winner as str"""
@@ -91,13 +96,22 @@ class Game:
             winner = "tie"
             
         return winner
-        
+
+    def update_ties(self):
+        """Keep track of ties separately since it's not a player"""
+        self.tie += 1
+    
+    def update_score(self, winner: str):
+        """Update score based on winner"""
+        if winner == "player":
+            self.player.add_score()
+        elif winner == "computer":
+            self.computer.add_score()
+        else:
+            self.update_ties()
+
 player = Player('john')
 computer = Computer()
 
 game = Game(player, computer)
-game.start_match(0)
-game.start_match(1)
-game.start_match(1)
-game.start_match(2)
 print(game.get_score())
